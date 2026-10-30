@@ -33,7 +33,7 @@
   panel.className = 'panel extra-tools';
   panel.setAttribute('aria-label', 'Herramientas adicionales');
   panel.innerHTML = `
-    <div class="topline"><h2>3. Administrar y preparar idiomas</h2><span class="step">HERRAMIENTAS</span></div>
+    <div class="topline"><h2>4. Administrar y preparar idiomas</h2><span class="step">HERRAMIENTAS</span></div>
     <div class="extra-layout">
       <div class="extra-box">
         <h3>Editor TXT integrado</h3>
