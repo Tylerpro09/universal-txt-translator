@@ -388,6 +388,7 @@ function installProfile(text, filename) {
     for (const id of ['translate', 'example']) $(id).disabled = false;
     renderMappings(p);
     doTranslate();
+    document.dispatchEvent(new Event('motor:profile-changed'));
   } catch (err) {
     $('parseWarning').textContent = err.message;
     if (!activeProfile) showStatus(err.message, 'warn');
@@ -464,6 +465,7 @@ $('save').addEventListener('click', () => {
 });
 </script>
 <script src="./enhancements.js" defer></script>
+<script src="./quality.js" defer></script>
 <script src="./offline.js" defer></script>
 </body>
 </html>
