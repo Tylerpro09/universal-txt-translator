@@ -3,6 +3,7 @@
 ## 2.1.0 — 2026-10-30
 
 - Se conserva el motor de traducción bidireccional por TXT, sin idiomas precargados.
+- CLI con Node.js para traducir textos y archivos desde la terminal.
 - Editor TXT integrado para pegar, validar, activar y editar un perfil.
 - Biblioteca opcional de perfiles en el almacenamiento local del navegador (máximo 12).
 - Exportación del perfil activo como TXT.
