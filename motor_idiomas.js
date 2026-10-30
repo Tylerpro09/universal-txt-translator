@@ -129,7 +129,7 @@
   function scan(text,compiled,direction,keepOutput=true) {
     const tables=compiled[direction];
     let output='',matches=0,matchedCharacters=0;
-    const spans=[];
+    const spans=keepOutput?[]:null;
     for(let i=0;i<text.length;) {
       let found=findMatch(text,i,tables.word,true);
       if(!found)found=findMatch(text,i,tables.alpha,false);
@@ -138,7 +138,7 @@
         const changed=preserveCase(original,found.value);
         if(keepOutput)output+=changed;
         const end=i+found.key.length;
-        spans.push([i,end]);
+        if(keepOutput)spans.push([i,end]);
         matchedCharacters+=meaningful(original);
         matches++;
         i=end;
@@ -190,9 +190,12 @@
     const scanResult=scan(normalized,compiled,direction);
     const totalCharacters=meaningful(normalized);
     const untranslatedWords=[],seen=new Set();
+    let spanIndex=0;
     for(const m of normalized.matchAll(SOURCE_WORD)) {
       const start=m.index,end=start+m[0].length;
-      const covered=scanResult.spans.some(([a,b])=>a<end&&b>start);
+      while(spanIndex<scanResult.spans.length&&scanResult.spans[spanIndex][1]<=start)spanIndex++;
+      const span=scanResult.spans[spanIndex];
+      const covered=Boolean(span&&span[0]<end&&span[1]>start);
       if(covered)continue;
       const word=lower(m[0]);
       if(!seen.has(word)&&untranslatedWords.length<20){seen.add(word);untranslatedWords.push(m[0]);}
