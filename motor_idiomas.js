@@ -194,9 +194,14 @@
     for(const m of normalized.matchAll(SOURCE_WORD)) {
       const start=m.index,end=start+m[0].length;
       while(spanIndex<scanResult.spans.length&&scanResult.spans[spanIndex][1]<=start)spanIndex++;
-      const span=scanResult.spans[spanIndex];
-      const covered=Boolean(span&&span[0]<end&&span[1]>start);
-      if(covered)continue;
+      let cursor=start, scanIndex=spanIndex;
+      while(scanIndex<scanResult.spans.length && scanResult.spans[scanIndex][0]<end) {
+        const span=scanResult.spans[scanIndex];
+        if(span[0]>cursor)break;
+        cursor=Math.max(cursor,span[1]);
+        scanIndex++;
+      }
+      if(cursor>=end)continue;
       const word=lower(m[0]);
       if(!seen.has(word)&&untranslatedWords.length<20){seen.add(word);untranslatedWords.push(m[0]);}
     }
