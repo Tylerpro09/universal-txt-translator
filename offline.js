@@ -49,7 +49,8 @@
     prepareButton.hidden = true;
     return;
   }
-  if (!('serviceWorker' in navigator) || !('caches' in window) ||\n      !(location.protocol === 'https:' || ['localhost','127.0.0.1'].includes(location.hostname))) {
+  if (!('serviceWorker' in navigator) || !('caches' in window) ||
+      !(location.protocol === 'https:' || ['localhost','127.0.0.1'].includes(location.hostname))) {
     report('Tu navegador no admite el modo web sin conexión. Descarga el proyecto completo y abre index.html localmente.');
     prepareButton.hidden = true;
     return;
