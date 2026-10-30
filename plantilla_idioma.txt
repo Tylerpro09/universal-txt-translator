@@ -1,0 +1,16 @@
+# PLANTILLA VACÍA PARA UN IDIOMA (guardar como UTF-8)
+# El motor reconoce el nombre del idioma y las equivalencias.
+# Para usar este archivo debes añadir tus propias entradas.
+ORIGEN: Español
+IDIOMA: Nombre del idioma de destino
+
+[ALFABETO]
+# a = <carácter_destino>
+# b = <carácter_destino>
+
+[DICCIONARIO]
+# hola = <traducción>
+# buenos días = <traducción>
+
+# Quita el signo # de cada equivalencia que escribas.
+# Formatos admitidos: a = x, a | x, a -> x, a => x, a → x
