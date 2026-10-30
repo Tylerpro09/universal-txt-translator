@@ -70,10 +70,10 @@
       </div>
     </div>
     <nav class="extra-docs" aria-label="Documentación">
-      <a href="docs/GUIA_USUARIO.md" target="_blank" rel="noopener">Guía de uso</a>
-      <a href="docs/FORMATO_TXT.md" target="_blank" rel="noopener">Especificación TXT</a>
-      <a href="docs/API_JAVASCRIPT.md" target="_blank" rel="noopener">API JavaScript</a>
-      <a href="docs/PREGUNTAS_FRECUENTES.md" target="_blank" rel="noopener">Preguntas frecuentes</a>
+      <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/GUIA_USUARIO.md" target="_blank" rel="noopener">Guía de uso</a>
+      <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/FORMATO_TXT.md" target="_blank" rel="noopener">Especificación TXT</a>
+      <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/API_JAVASCRIPT.md" target="_blank" rel="noopener">API JavaScript</a>
+      <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/PREGUNTAS_FRECUENTES.md" target="_blank" rel="noopener">Preguntas frecuentes</a>
       <a href="https://github.com/Tylerpro09/universal-txt-translator" target="_blank" rel="noopener">Repositorio</a>
     </nav>
   `;
