@@ -4,7 +4,7 @@
 const CACHE_NAME = 'motor-txt-offline-v4';
 const CACHE_PREFIXES = ['motor-txt-offline-', 'motor-txt-web-'];
 const OFFLINE_FILES = [
-  './', './index.html', './enhancements.js', './offline.js',
+  './', './index.html', './enhancements.js', './quality.js', './offline.js',
   './motor_idiomas.js', './manifest.webmanifest', './icon.svg',
   './icon-192.png', './icon-512.png', './docs/index.html',
   './docs/SIN_CONEXION.md'
