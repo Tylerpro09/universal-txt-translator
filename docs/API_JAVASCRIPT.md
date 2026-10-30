@@ -21,6 +21,8 @@ const motor = require('./motor_idiomas.js');
 </script>
 ```
 
+La versión actual del motor exporta `version: '3.0.0'` y sigue admitiendo `parseProfile`, `detectDirection` y `translate` de las versiones anteriores.
+
 La página `index.html` contiene una copia embebida del núcleo para que la traducción básica siga funcionando incluso si se abre el HTML aislado.
 
 ## 2. `parseProfile(raw, filename?)`
@@ -86,6 +88,12 @@ type TranslationResult = {
     reason: string;
   };
   matches: number;
+  stats: {
+    coverage: number;          // porcentaje aproximado (0-100)
+    matchedCharacters: number; // caracteres no blancos cubiertos
+    totalCharacters: number;   // total no blanco
+    untranslatedWords: string[]; // maximo 20 palabras sin cobertura completa
+  };
   warning: string;
 };
 ```
@@ -94,7 +102,19 @@ Si pides `auto` y no hay evidencia suficiente o hay ambigüedad, devuelve `direc
 
 `matches` es el número de sustituciones encontradas, no una puntuación de calidad ni una certeza sobre el idioma.
 
-## 4. `detectDirection(text, profile)`
+## 4. `explain(text, profile, direction?)`
+
+Devuelve únicamente el informe de cobertura para un texto y perfil ya cargados.
+
+```js
+const stats = motor.explain('hola mundo', profile, 'encode');
+console.log(stats.coverage);           // porcentaje aproximado
+console.log(stats.untranslatedWords);  // palabras parcialmente o no reconocidas
+```
+
+Esta métrica cuenta los caracteres cubiertos por reglas; no comprueba si el resultado tiene significado, gramática o calidad humana.
+
+## 5. `detectDirection(text, profile)`
 
 Evalúa coincidencias en ambos sentidos para sugerir la dirección.
 
@@ -106,7 +126,7 @@ console.log(detection.reason);
 
 Los símbolos únicos del destino aportan evidencia adicional. La detección no es un clasificador lingüístico entrenado.
 
-## 5. Manejo de errores recomendado
+## 6. Manejo de errores recomendado
 
 ```js
 try {
@@ -120,7 +140,7 @@ try {
 }
 ```
 
-## 6. Procesar un archivo en Node.js
+## 7. Procesar un archivo en Node.js
 
 ```js
 const fs = require('node:fs');
@@ -131,7 +151,7 @@ const result = motor.translate('frase de prueba', profile, 'encode');
 fs.writeFileSync('resultado.txt', result.output, 'utf8');
 ```
 
-## 7. Restricciones y seguridad
+## 8. Restricciones y seguridad
 
 La API no evalúa JavaScript desde el TXT: solo extrae equivalencias. El motor debe considerarse un **transformador de reglas**, no una solución de traducción general. Limita el tamaño de las entradas que provengan de terceros y no ejecutes código arbitrario incluido en archivos adjuntos.
 
