@@ -31,7 +31,7 @@ function parseArgs(argv) {
     ['-o','output'],['--output','output'],
     ['-d','direction'],['--direction','direction']
   ]);
-  const options = {direction:'auto'};
+  const options = {};
   for (let i=0; i<argv.length; i++) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') { options.help = true; return options; }
@@ -44,6 +44,7 @@ function parseArgs(argv) {
   if (!options.profile) throw new Error('Falta --profile <archivo.txt>.');
   if (options.text !== undefined && options.input) throw new Error('Utiliza --text o --input, no ambos.');
   if (options.text === undefined && !options.input) throw new Error('Especifica --text o --input.');
+  if (!options.direction) options.direction = 'auto';
   if (!['encode','decode','auto'].includes(options.direction)) throw new Error('Dirección inválida: ' + options.direction);
   return options;
 }
