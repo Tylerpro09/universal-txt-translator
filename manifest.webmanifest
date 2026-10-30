@@ -1,7 +1,7 @@
 {
   "name": "Motor TXT Universal — Traductor de idiomas personalizados",
   "short_name": "Motor TXT",
-  "description": "Crea un traductor bidireccional desde un archivo TXT, sin enviar tus datos a servidores.",
+  "description": "Traductor de idiomas desde TXT. Funciona online y sin Wi-Fi después de preparar el modo offline.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
@@ -10,10 +10,29 @@
   "theme_color": "#0b1123",
   "icons": [
     {
+      "src": "./icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
       "src": "./icon.svg",
       "type": "image/svg+xml",
       "sizes": "any",
-      "purpose": "any maskable"
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Documentación",
+      "short_name": "Guía",
+      "url": "./docs/index.html"
     }
   ]
 }
