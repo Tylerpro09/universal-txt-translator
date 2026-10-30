@@ -215,7 +215,5 @@
   $('input').addEventListener('keydown', ev => {
     if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') { ev.preventDefault(); doTranslate(); }
   });
-  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(() => {});
-  }
+  // El modulo offline.js gestiona la instalación y el registro del service worker.
 })();
