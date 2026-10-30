@@ -1,99 +1,101 @@
-# Mejoras del traductor — Versión 3.0
+# Motor TXT Universal 3.0 — Mejoras del traductor
 
-[Volver al inicio](../README.md) · [Traductor web](https://tylerpro09.github.io/universal-txt-translator/) · [Guía de usuario](GUIA_USUARIO.md)
+[Inicio](../README.md) · [Guía](GUIA_USUARIO.md) · [API](API_JAVASCRIPT.md) · [Sin Wi-Fi](SIN_CONEXION.md)
 
-## ¿Qué ha cambiado?
+## Qué cambió
 
-La versión 3.0 mejora el **motor de correspondencias TXT** y añade una herramienta de **diagnóstico interactivo** para detectar qué necesita cada idioma personalizado. Continúa sin ningún idioma predeterminado y sin enviar textos a servidores externos.
+La versión 3.0 conserva la estructura de los TXT: no hay idiomas precargados y un texto sin equivalencias no puede traducirse automáticamente. El motor se ejecuta en el dispositivo, sin API externa.
 
-## 1. Traducción más precisa
+### 1. Coincidencias de palabras y frases
 
-### Frases antes que letras
-
-Si defines:
+El sistema reconoce las frases completas antes que las palabras sueltas. Por ejemplo:
 
 ```txt
 ORIGEN: Español
-IDIOMA: Ejemplo
-
+IDIOMA: Demostración
 [DICCIONARIO]
 gato = cat
 gato negro = black cat
+hola = hello
 ```
 
-Al traducir `gato negro`, el motor utiliza la expresión larga `black cat` en vez de producir dos conversiones parciales.
+Entrada: `Hola, gato negro.`  
+Salida: `Hello, black cat.`
 
-### Evita alterar el interior de otras palabras
+Se conservan las palabras no incluidas en el diccionario y la puntuación. **No interpreta la gramática ni produce traducciones de palabras desconocidas por IA.**
 
-Una regla `el = the` no cambia las letras finales de `hotel`; se aplica a la palabra completa `el`.
+### 2. Manejo de Unicode
 
-### Unicode NFC
+- Normaliza formas equivalentes de caracteres con NFC, por ejemplo `café` y `cafe\u0301`.
+- Reconoce símbolos y secuencias Unicode, incluidos emojis multicaracter.
+- Conserva mayúsculas de las palabras cuando es posible.
+- Evita reemplazar fragmentos dentro de otras palabras del diccionario (límites de palabra).
 
-Se reconocen letras con acentos compuestos o combinados, y se permiten secuencias de símbolos Unicode como destinos de las letras del alfabeto.
+**Limitación:** en alfabetos convertidos a símbolos, no siempre es posible reconstruir mayúsculas originales al descifrar.
 
-### Mayúsculas
+### 3. Cobertura y diagnóstico
 
-El motor intenta conservar mayúsculas en conversiones de palabras y letras. Esto no equivale a transliteración fonética ni a reconstrucción gramatical.
+Debajo del traductor aparece **«Calidad y mejora del idioma»**. Muestra:
+- Cobertura aproximada de los caracteres no vacíos con equivalencia.
+- Número de coincidencias aplicadas.
+- Palabras que contienen partes sin traducir.
+- Botón para exportar un diagnóstico como TXT.
 
-## 2. Panel de cobertura
+La cobertura **no representa una puntuación de exactitud**. Una traducción puede tener alta cobertura y ser semánticamente incorrecta si el diccionario es incorrecto.
 
-Después de cargar un idioma, escribe un texto y selecciona la dirección de traducción.
+### 4. Añadir palabras desde el resultado
 
-El panel muestra:
+1. Carga o crea un idioma TXT.
+2. Escribe un texto de prueba en el traductor.
+3. Selecciona una palabra pendiente en el panel.
+4. Escribe su equivalencia y pulsa **Añadir equivalencia al idioma**.
+5. Comprueba la traducción actualizada.
+6. Pulsa **Guardar perfil actual** o **Exportar perfil .txt** si deseas conservar el cambio.
 
-- **Porcentaje de cobertura**: fracción de los caracteres no blancos incluidos en reglas aplicadas.
-- **Coincidencias**: cantidad de reemplazos realizados.
-- **Palabras pendientes**: hasta 20 palabras que tienen segmentos sin equivalencia.
-- **Diagnóstico TXT**: descarga un informe con la entrada, la salida y las métricas.
+Las equivalencias deben ser explícitas. Los duplicados o ambigüedades en la traducción inversa se detectan durante la validación del perfil.
 
-Si aparece `92 %`, significa que un 92 % aproximadamente de los caracteres no blancos fueron cubiertos por una regla. **No significa** una calidad de traducción del 92 %.
+### 5. Rendimiento
 
-## 3. Completar un idioma sin editar archivos manualmente
+Se utilizan índices de reglas por carácter inicial en lugar de comprobar todas las reglas en cada posición del texto. Se limita la muestra de texto usada para estimar la dirección automática, evitando realizar el análisis de ambos sentidos sobre documentos enormes.
 
-1. Escribe una frase usando tu idioma activo.
-2. Revisa las palabras en el panel de calidad.
-3. Toca una palabra para rellenar el campo **Texto original**.
-4. Introduce su traducción.
-5. Pulsa **Añadir equivalencia al idioma**.
-6. Comprueba que cambia el resultado y la cobertura.
-7. Pulsa **Exportar perfil .txt** o **Guardar perfil actual** para conservar el vocabulario añadido.
+El límite actual sigue siendo **5000 equivalencias** y **2 MB** para los archivos TXT cargados en la web.
 
-El botón no utiliza ningún servicio de IA: requiere que definas cada equivalencia.
+### 6. Continúa funcionando sin Wi-Fi
 
-## 4. ¿Mejora también el uso sin Wi-Fi?
+Los recursos `quality.js`, `offline.js` y el traductor están incluidos en los archivos guardados por el modo offline. Debes pulsar **Guardar para usar sin Wi-Fi** mientras estés conectado y comprobar que se hayan guardado los 12 recursos necesarios.
 
-Sí. La nueva interfaz se incluye dentro del caché de la aplicación. Con Internet, pulsa **Guardar para usar sin Wi-Fi** y comprueba la confirmación de **12 recursos guardados**.
+La aplicación puede funcionar localmente en un navegador moderno. El botón de descarga de informe crea el TXT en tu dispositivo; no envía el contenido a un servidor.
 
-Después puedes apagar Wi-Fi y datos móviles y seguir creando idiomas, traduciendo y consultando el diagnóstico. Consulta [Modo offline](SIN_CONEXION.md) para instalar la PWA o descargar la carpeta portátil.
+## API 3.0
 
-## 5. Pruebas y compatibilidad
+```js
+const motor = require('./motor_idiomas.js');
+const perfil = motor.parseProfile(`ORIGEN: Español
+IDIOMA: Demostración
+[DICCIONARIO]
+hola = hello
+`);
+const resultado = motor.translate('hola mundo', perfil, 'encode');
+console.log(resultado.output);                    // hello mundo
+console.log(resultado.stats.coverage);             // cobertura aproximada
+console.log(resultado.stats.untranslatedWords);    // ['mundo']
+console.log(motor.explain('hola mundo',perfil,'encode')); // estadísticas
+```
 
-La versión 3.0 incorpora pruebas automatizadas para:
+El objeto `resultado.stats` incluye `coverage`, `matchedCharacters`, `totalCharacters` y `untranslatedWords`.
 
-- Frases solapadas y prioridad de expresiones.
-- Límites de palabra.
-- Mayúsculas y puntuación.
-- Tildes combinadas y símbolos Unicode compuestos.
-- Detección ambigua de la dirección.
-- Textos parcialmente traducidos.
-- Entrada de 100 000 caracteres.
-- Uso desde Node.js.
-
-Ejecuta:
+## Comprobaciones
 
 ```bash
 npm run check
 ```
 
-En el navegador también se verificaron el panel de cobertura, la adición de reglas, la visualización móvil y la traducción sin conexión simulando modo avión.
+El comando comprueba la sintaxis de los scripts del proyecto y ejecuta las pruebas del motor, CLI y los escenarios avanzados (Unicode, frases, cobertura, detección y textos extensos).
 
-## 6. Limitaciones importantes
+## Precauciones
 
-- Necesitas equivalencias entre origen y destino: no puede descifrar automáticamente un idioma desconocido sin referencias.
-- No aplica orden gramatical, conjugaciones o significado por contexto salvo que el TXT defina expresiones concretas.
-- Un diccionario incompleto puede dejar palabras originales sin traducir.
-- El porcentaje de cobertura mide coincidencias, no corrección lingüística.
-- Un idioma de símbolos no constituye cifrado seguro.
-- No hay mod Minecraft compilado en el repositorio.
-
-Para desarrolladores: [Referencia de API](API_JAVASCRIPT.md) y [Arquitectura](ARQUITECTURA.md).
+- No es un sistema de cifrado: un idioma basado en sustitución puede analizarse e invertirse.
+- No crea automáticamente significados que no aparezcan en el TXT.
+- El sentido automático puede ser ambiguo. Elige origen → destino o destino → origen si la detección falla.
+- La cobertura es una métrica de coincidencia, no de calidad semántica.
+- No hay sincronización entre equipos: exporta los perfiles que quieras conservar.
