@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## 3.0.0 — 2026-10-30
+
+- Nuevo motor de traducción Unicode NFC con mayor soporte de símbolos y acentos combinados.
+- Selección de reglas por prioridad de frases completas y límites de palabras más precisos.
+- Tablas indexadas y caché del perfil para reducir trabajo repetido y evitar expresiones regulares gigantes.
+- Informe de cobertura con porcentaje, caracteres reconocidos y palabras pendientes.
+- Botón para añadir equivalencias al diccionario desde el panel de calidad.
+- Descarga de informe local con diagnóstico de traducción.
+- Nuevas pruebas Unicode, mayúsculas, ambigüedades, traducción parcial y texto de 100 000 caracteres.
+- Modo offline actualizado para conservar `quality.js` junto al resto de recursos.
+
 ## 2.2.0 — 2026-10-30
 
 - Preparación del modo sin Wi-Fi mediante botón y verificación de archivos esenciales.
