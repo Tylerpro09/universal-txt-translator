@@ -128,3 +128,9 @@ luna = moon
 Archivos que contienen un título con `— ALFABETO`, seguido de líneas `A = símbolo`, suelen ser compatibles. Si no se detectan entradas, añade explícitamente `[ALFABETO]` o `[DICCIONARIO]` e intenta de nuevo.
 
 Consulta la [API](API_JAVASCRIPT.md) para procesar el TXT por código.
+
+## Espacios flexibles y prefijos ambiguos (3.0.1)
+
+Las frases del diccionario aceptan uno o más espacios, tabulaciones y saltos de línea entre palabras. Una regla con "buenos días" también reconoce "buenos   días" y conserva el destino definido.
+
+Si un símbolo del alfabeto es prefijo de otro, aparece una advertencia. En esa configuración, la traducción inversa no siempre puede reconstruir exactamente la secuencia original.

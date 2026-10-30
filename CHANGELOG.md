@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## 3.0.1 — 2026-10-30
+
+- Frases que reconocen varios espacios, tabulaciones y saltos de línea.
+- Avisos al detectar símbolos con prefijos comunes que hacen ambigua la traducción inversa.
+- Pruebas adicionales de Unicode, prioridad y diccionarios grandes.
+- Motor embebido sincronizado con el JavaScript reutilizable.
+- Caché offline renovada.
+
+
 ## 3.0.0 — 2026-10-30
 
 - Nuevo motor de traducción Unicode NFC con mayor soporte de símbolos y acentos combinados.

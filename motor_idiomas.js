@@ -23,6 +23,10 @@
   const foldHeading = s => s.normalize('NFD').replace(/\p{M}/gu, '').toUpperCase().trim();
   const trimQuotes = s => s.trim().replace(/^["'“”‘’]+|["'“”‘’]+$/gu, '').trim();
   const meaningful = s => [...s].filter(ch => !/\s/u.test(ch)).length;
+  const escapeRegex = value => [...value].map(ch => {
+    const special = '\\^$.*+?()[]{}|';
+    return special.includes(ch) ? '\\' + ch : ch;
+  }).join('');
 
   function parseProfile(raw, filename='idioma.txt') {
     if (typeof raw !== 'string' || !raw.trim()) throw new Error('El TXT está vacío.');
@@ -70,16 +74,27 @@
       if(entries>MAX_ENTRIES)throw new Error('Demasiadas entradas. Máximo: 5000.');
     }
     if(!entries)throw new Error('No hay equivalencias reconocibles. Añade [ALFABETO] con a = símbolo o [DICCIONARIO] con hola = palabra.');
+    const symbols = alphabet.map(pair => lower(pair.to)).sort();
+    for (let j=1;j<symbols.length;j++) {
+      if (symbols[j].startsWith(symbols[j-1])) {
+        warnings.push('Aviso: algunos símbolos comparten prefijos; la traducción inversa puede ser ambigua y no recuperar el texto original.');
+        break;
+      }
+    }
     const profile={name,sourceLanguage,filename,alphabet,words,warnings,entries};
     return profile;
   }
 
-  function buckets(pairs, direction) {
+  function buckets(pairs, direction, flexibleSpaces=false) {
     const result=new Map();
     for(const pair of pairs) {
       const key=direction==='encode'?pair.from:pair.to;
       const value=direction==='encode'?pair.to:pair.from;
       const item={key,value,folded:lower(key)};
+      if (flexibleSpaces && /\s/u.test(key)) {
+        const pattern = key.split(/\s+/u).map(escapeRegex).join(String.raw`\s+`);
+        item.spaceRegex = new RegExp('^' + pattern, 'iu');
+      }
       const first=cp(item.folded,0);
       if(!result.has(first)) result.set(first,[]);
       result.get(first).push(item);
@@ -92,8 +107,8 @@
       throw new Error('Primero carga un perfil TXT válido.');
     }
     if(cache.has(profile))return cache.get(profile);
-    const compiled={encode:{word:buckets(profile.words,'encode'),alpha:buckets(profile.alphabet,'encode')},
-                    decode:{word:buckets(profile.words,'decode'),alpha:buckets(profile.alphabet,'decode')}};
+    const compiled={encode:{word:buckets(profile.words,'encode',true),alpha:buckets(profile.alphabet,'encode')},
+                    decode:{word:buckets(profile.words,'decode',true),alpha:buckets(profile.alphabet,'decode')}};
     cache.set(profile,compiled);
     return compiled;
   }
@@ -102,15 +117,23 @@
     const group=table.get(key);
     if(!group)return null;
     for(const item of group) {
-      const segment=text.slice(i,i+item.key.length);
-      if(lower(segment)!==item.folded)continue;
+      let segment;
+      if (item.spaceRegex) {
+        const limit = Math.min(text.length, i + item.key.length * 5 + 256);
+        const match = item.spaceRegex.exec(text.slice(i,limit));
+        if (!match) continue;
+        segment = match[0];
+      } else {
+        segment=text.slice(i,i+item.key.length);
+        if(lower(segment)!==item.folded)continue;
+      }
       if(boundaries) {
         // Una frase solo requiere limites cuando empieza/termina con letras o numeros.
-        const before=prevCP(text,i), after=cp(text,i+item.key.length);
+        const before=prevCP(text,i), after=cp(text,i+segment.length);
         if(WORD_CHAR.test(cp(item.key,0)) && before && WORD_CHAR.test(before))continue;
         if(WORD_CHAR.test(prevCP(item.key,item.key.length))&&after&&WORD_CHAR.test(after))continue;
       }
-      return item;
+      return {...item, matchedLength: segment.length};
     }
     return null;
   }
@@ -134,10 +157,10 @@
       let found=findMatch(text,i,tables.word,true);
       if(!found)found=findMatch(text,i,tables.alpha,false);
       if(found) {
-        const original=text.slice(i,i+found.key.length);
+        const original=text.slice(i,i+found.matchedLength);
         const changed=preserveCase(original,found.value);
         if(keepOutput)output+=changed;
-        const end=i+found.key.length;
+        const end=i+found.matchedLength;
         if(keepOutput)spans.push([i,end]);
         matchedCharacters+=meaningful(original);
         matches++;

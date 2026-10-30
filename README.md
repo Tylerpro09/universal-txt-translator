@@ -102,6 +102,9 @@ Como alternativa, [descarga el repositorio en ZIP](https://github.com/Tylerpro09
 
 Consulta la [guía offline](docs/SIN_CONEXION.md) para instrucciones en Android y Windows.
 
+## Mejoras de precisión (3.0.1)
+
+Las frases del diccionario aceptan espacios múltiples y saltos de línea, sin crear variantes individuales. Si los símbolos del alfabeto comparten prefijos, el traductor advierte de que la inversión puede perder información. Se añadieron pruebas de Unicode, cobertura, límites y rendimiento.
 ## Desarrollo y pruebas
 
 Requiere **Node.js 22 o superior** para ejecutar la suite incluida (el motor también puede funcionar en navegadores modernos sin Node).
