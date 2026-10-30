@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1123">
+<meta name="description" content="Documentación oficial de Motor TXT Universal: archivos, traductor, API, CLI, privacidad e integración futura con Minecraft.">
+<title>Documentación · Motor TXT Universal</title>
+<style>
+:root{color-scheme:dark;--bg:#080e1d;--card:#121e35;--edge:#2d405d;--txt:#eef4ff;--muted:#a1b2d1;--accent:#67d9fb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:linear-gradient(145deg,#101c35,#080e1d 48%);color:var(--txt);font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif;margin:0}
+a{color:#8de2ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1150px;margin:auto;padding:22px}
+nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--edge);padding:13px 0 18px}
+nav a{font-weight:700}
+.tag{color:var(--accent);font-size:.8rem;letter-spacing:.09em;font-weight:750;text-transform:uppercase}
+.hero{padding:44px 0 30px}h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.1;letter-spacing:-.04em;margin:10px 0 18px}h2{font-size:1.45rem;letter-spacing:-.02em;scroll-margin-top:20px}h3{font-size:1.05rem}
+p{color:var(--muted)}.hero p{max-width:850px;font-size:1.09rem}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:25px;align-items:start}
+aside{position:sticky;top:18px;padding:14px;background:#0f1930;border:1px solid var(--edge);border-radius:15px}
+aside a{display:block;padding:7px 10px;border-radius:8px;font-size:.91rem}aside a:hover{background:#1c304a;text-decoration:none}
+article>section{background:rgba(18,30,53,.82);border:1px solid var(--edge);border-radius:16px;padding:21px 24px;margin-bottom:18px}
+code,pre{font:0.91rem/1.65 ui-monospace,Consolas,monospace}code{color:#c7b7ff}pre{overflow:auto;background:#080e1d;border:1px solid #263954;border-radius:12px;padding:17px;color:#dceafa}
+pre code{color:inherit}
+button{border:1px solid #486b91;background:#1c3d5c;color:white;padding:9px 13px;border-radius:8px;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.callout{padding:12px 16px;border-left:3px solid #66d7ff;background:#132842;border-radius:6px;color:#d3e7ff;font-size:.94rem}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{padding:16px;border:1px solid var(--edge);background:#102138;border-radius:11px;color:var(--txt)}.card strong{display:block;margin-bottom:6px}.card small{color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:28px 0}
+@media(max-width:780px){.layout{grid-template-columns:1fr}aside{position:static}.cards{grid-template-columns:1fr}article>section{padding:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="../index.html">⇄ Motor TXT Universal</a><a href="https://github.com/Tylerpro09/universal-txt-translator" target="_blank" rel="noopener">Código en GitHub ↗</a></nav>
+<header class="hero"><span class="tag">Centro de documentación · Versión 2.1</span><h1>Todo sobre el traductor TXT</h1>
+<p>Crea reglas de letras, palabras y frases; convierte tus archivos en un traductor bidireccional; administra perfiles y utiliza la biblioteca JavaScript o la CLI sin enviar los textos a una API.</p></header>
+<div class="layout">
+<aside aria-label="Índice de la documentación">
+<strong style="display:block;padding:7px 10px">Contenido</strong>
+<a href="#inicio">Inicio rápido</a>
+<a href="#formato">Formato TXT</a>
+<a href="#sentido">Dirección de traducción</a>
+<a href="#herramientas">Herramientas</a>
+<a href="#cli">CLI y API</a>
+<a href="#limites">Límites y privacidad</a>
+<a href="#minecraft">Minecraft</a>
+<a href="#manuales">Todos los manuales</a>
+</aside>
+<article>
+<section id="inicio"><h2>1. Inicio rápido</h2>
+<p>Abre la <a href="../index.html">aplicación</a>, selecciona tu TXT en el área de carga o pega su contenido en el editor integrado. Pulsa <strong>Validar TXT</strong> y <strong>Activar idioma</strong>. A continuación, introduce el texto y elige el sentido de traducción.</p>
+<div class="callout">No existen idiomas precargados. Para producir una traducción, el archivo debe incluir equivalencias explícitas.</div></section>
+<section id="formato"><h2>2. Estructura mínima de un idioma</h2>
+<p>Usa las secciones <code>[ALFABETO]</code> para caracteres o <code>[DICCIONARIO]</code> para palabras y frases. Se pueden combinar.</p>
+<pre><code id="sample">ORIGEN: Español
+IDIOMA: Otro idioma
+
+[ALFABETO]
+a = ★
+b = ☆
+
+[DICCIONARIO]
+hola = saludo
+buenos días = saludo matinal</code></pre>
+<button id="copyExample" type="button">Copiar ejemplo</button>
+<p>El ejemplo es demostrativo y no se carga automáticamente. Guarda tus definiciones como <code>.txt</code> UTF-8.</p>
+<p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/FORMATO_TXT.md">Especificación de todas las reglas →</a></p></section>
+<section id="sentido"><h2>3. Traducción y detección</h2>
+<p>Puedes traducir de origen a destino o a la inversa. La opción automática examina las coincidencias disponibles para estimar el sentido. Si ambos sistemas utilizan caracteres similares, el resultado puede ser ambiguo y es mejor elegir la dirección manualmente.</p>
+<p>El motor prioriza coincidencias completas de palabras o frases; después aplica el alfabeto a los fragmentos restantes. Los trozos desconocidos se conservan sin inventar una traducción.</p></section>
+<section id="herramientas"><h2>4. Herramientas de la web</h2>
+<div class="cards">
+<div class="card"><strong>Editor y validador</strong><small>Pega un idioma sin crear archivo, revisa advertencias, activa y modifica el perfil.</small></div>
+<div class="card"><strong>Biblioteca local</strong><small>Guarda hasta 12 perfiles voluntariamente en este navegador; restaura, elimina o exporta.</small></div>
+<div class="card"><strong>Traducción por lotes</strong><small>Selecciona un TXT de texto y descarga el resultado. Máximo 2 MB.</small></div>
+<div class="card"><strong>Consulta de reglas</strong><small>Visualiza y filtra las equivalencias del perfil activado.</small></div>
+</div></section>
+<section id="cli"><h2>5. CLI y API de desarrollo</h2>
+<p>Puedes utilizar la biblioteca JavaScript <code>motor_idiomas.js</code> en tu propia aplicación o traducir desde una consola con Node.js 22+.</p>
+<pre><code>npm test
+node cli.js --help
+node cli.js -p mi_idioma.txt -t "hola" -d encode</code></pre>
+<p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/CLI.md">Manual de CLI</a> · <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/API_JAVASCRIPT.md">Referencia de API</a></p></section>
+<section id="limites"><h2>6. Límites y privacidad</h2>
+<p>Los TXT se procesan dentro de tu navegador. No se envían a un traductor remoto. El almacenamiento opcional de perfiles utiliza <code>localStorage</code>; no se guardan automáticamente los mensajes que escribas. Los recursos públicos del sitio sí se sirven desde GitHub Pages.</p>
+<p>Máximo: <strong>2 MB</strong> por TXT, <strong>5000 equivalencias</strong> y <strong>160 caracteres por lado</strong>. La detección no es infalible. No se interpretan gramáticas ni se descifran idiomas desconocidos mediante IA.</p>
+<div class="callout">Un alfabeto secreto no es cifrado seguro. El motor no protege conversaciones confidenciales mediante criptografía.</div>
+<p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/PRIVACIDAD.md">Leer política técnica de privacidad →</a></p></section>
+<section id="minecraft"><h2>7. Posible integración Minecraft</h2>
+<p>Se ha documentado cómo compartir el formato TXT con un mod Java y cómo implementar la traducción del chat de forma opcional. <strong>El mod todavía no está creado ni compilado.</strong> Antes de implementarlo hay que decidir versión, cargador y permisos.</p>
+<p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/INTEGRACION_MINECRAFT.md">Ver diseño técnico →</a></p></section>
+<section id="manuales"><h2>8. Manuales completos</h2>
+<div class="cards">
+<a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/GUIA_USUARIO.md"><strong>Guía del usuario</strong><small>Windows, Android, archivos y biblioteca.</small></a>
+<a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/FORMATO_TXT.md"><strong>Formato TXT</strong><small>Metadatos, encabezados y conflictos.</small></a>
+<a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/PREGUNTAS_FRECUENTES.md"><strong>Solución de problemas</strong><small>Errores, detección y compatibilidad.</small></a>
+<a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/ARQUITECTURA.md"><strong>Arquitectura</strong><small>Diseño interno, módulos y limitaciones.</small></a>
+</div></section>
+</article>
+</div>
+<footer>Motor TXT Universal · Sin idiomas preinstalados · Documentación del repositorio <a href="../index.html">Volver al traductor</a></footer>
+</div>
+<script>
+document.getElementById('copyExample').addEventListener('click',async()=>{
+  const button=document.getElementById('copyExample');
+  try { await navigator.clipboard.writeText(document.getElementById('sample').textContent); button.textContent='Ejemplo copiado'; }
+  catch (_) { button.textContent='Selecciona el código y cópialo'; }
+  setTimeout(()=>{button.textContent='Copiar ejemplo';},2500);
+});
+</script>
+</body></html>
