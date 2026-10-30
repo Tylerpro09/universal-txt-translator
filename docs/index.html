@@ -33,7 +33,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:28px 0}
 <body>
 <div class="wrap">
 <nav><a href="../index.html">⇄ Motor TXT Universal</a><a href="https://github.com/Tylerpro09/universal-txt-translator" target="_blank" rel="noopener">Código en GitHub ↗</a></nav>
-<header class="hero"><span class="tag">Centro de documentación · Versión 2.1</span><h1>Todo sobre el traductor TXT</h1>
+<header class="hero"><span class="tag">Centro de documentación · Versión 3.0</span><h1>Todo sobre el traductor TXT</h1>
 <p>Crea reglas de letras, palabras y frases; convierte tus archivos en un traductor bidireccional; administra perfiles y utiliza la biblioteca JavaScript o la CLI sin enviar los textos a una API.</p></header>
 <div class="layout">
 <aside aria-label="Índice de la documentación">
@@ -42,6 +42,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:28px 0}
 <a href="#formato">Formato TXT</a>
 <a href="#sentido">Dirección de traducción</a>
 <a href="#herramientas">Herramientas</a>
+<a href="#cobertura">Calidad de traducción</a>
 <a href="#sin-wifi">Sin Wi-Fi</a>
 <a href="#cli">CLI y API</a>
 <a href="#limites">Límites y privacidad</a>
@@ -77,13 +78,23 @@ buenos días = saludo matinal</code></pre>
 <div class="card"><strong>Traducción por lotes</strong><small>Selecciona un TXT de texto y descarga el resultado. Máximo 2 MB.</small></div>
 <div class="card"><strong>Consulta de reglas</strong><small>Visualiza y filtra las equivalencias del perfil activado.</small></div>
 </div></section>
-<section id="cli"><h2>5. CLI y API de desarrollo</h2>
+<section id="cobertura"><h2>5. Diagnóstico y mejora del idioma</h2>
+<p>El nuevo motor 3.0 muestra la cobertura aproximada del texto, resalta palabras para las que faltan equivalencias y permite ampliar el diccionario sin editar manualmente el archivo TXT.</p>
+<div class="cards">
+<div class="card"><strong>Medidor de cobertura</strong><small>Cuántos caracteres no blancos están cubiertos por tus reglas: no mide corrección gramatical ni semántica.</small></div>
+<div class="card"><strong>Palabras pendientes</strong><small>Toca un término, introduce su traducción y añade la equivalencia al perfil activo.</small></div>
+<div class="card"><strong>Informe TXT</strong><small>Descarga un resumen de la entrada, traducción, cobertura y términos sin regla.</small></div>
+<div class="card"><strong>Unicode mejorado</strong><small>Reconoce acentos combinados y expresiones completas; respeta límites de palabras.</small></div>
+</div>
+<p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/MEJORAS_3_0.md">Manual completo de la versión 3.0 →</a></p>
+</section>
+<section id="cli"><h2>6. CLI y API de desarrollo</h2>
 <p>Puedes utilizar la biblioteca JavaScript <code>motor_idiomas.js</code> en tu propia aplicación o traducir desde una consola con Node.js 22+.</p>
 <pre><code>npm test
 node cli.js --help
 node cli.js -p mi_idioma.txt -t "hola" -d encode</code></pre>
 <p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/CLI.md">Manual de CLI</a> · <a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/API_JAVASCRIPT.md">Referencia de API</a></p></section>
-<section id="limites"><h2>6. Límites y privacidad</h2>
+<section id="limites"><h2>7. Límites y privacidad</h2>
 <p>Los TXT se procesan dentro de tu navegador. No se envían a un traductor remoto. El almacenamiento opcional de perfiles utiliza <code>localStorage</code>; no se guardan automáticamente los mensajes que escribas. Los recursos públicos del sitio sí se sirven desde GitHub Pages.</p>
 <p>Máximo: <strong>2 MB</strong> por TXT, <strong>5000 equivalencias</strong> y <strong>160 caracteres por lado</strong>. La detección no es infalible. No se interpretan gramáticas ni se descifran idiomas desconocidos mediante IA.</p>
 <div class="callout">Un alfabeto secreto no es cifrado seguro. El motor no protege conversaciones confidenciales mediante criptografía.</div>
@@ -93,10 +104,10 @@ node cli.js -p mi_idioma.txt -t "hola" -d encode</code></pre>
 <p>Para llevarte el traductor a otro equipo, descarga y descomprime la versión portátil del repositorio y abre <code>index.html</code>. Necesitas conservar tus archivos TXT de idiomas.</p>
 <div class="callout">Sin conexión siguen funcionando la traducción local, el editor, los TXT guardados en el dispositivo y la documentación web básica. Los enlaces a GitHub y las actualizaciones sí necesitan Internet.</div>
 <p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/SIN_CONEXION.md">Manual paso a paso para Android y Windows →</a></p></section>
-<section id="minecraft"><h2>7. Posible integración Minecraft</h2>
+<section id="minecraft"><h2>8. Posible integración Minecraft</h2>
 <p>Se ha documentado cómo compartir el formato TXT con un mod Java y cómo implementar la traducción del chat de forma opcional. <strong>El mod todavía no está creado ni compilado.</strong> Antes de implementarlo hay que decidir versión, cargador y permisos.</p>
 <p><a href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/INTEGRACION_MINECRAFT.md">Ver diseño técnico →</a></p></section>
-<section id="manuales"><h2>8. Manuales completos</h2>
+<section id="manuales"><h2>9. Manuales completos</h2>
 <div class="cards">
 <a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/GUIA_USUARIO.md"><strong>Guía del usuario</strong><small>Windows, Android, archivos y biblioteca.</small></a>
 <a class="card" href="https://github.com/Tylerpro09/universal-txt-translator/blob/main/docs/FORMATO_TXT.md"><strong>Formato TXT</strong><small>Metadatos, encabezados y conflictos.</small></a>
