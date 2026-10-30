@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## 2.2.0 — 2026-10-30
+
+- Preparación del modo sin Wi-Fi mediante botón y verificación de archivos esenciales.
+- Caché offline con respuesta inmediata y actualización posterior de recursos públicos.
+- Aplicación web instalable (PWA) con iconos PNG 192 y 512.
+- Estado visible de disponibilidad sin Wi-Fi y acceso al manual offline.
+- Funciona como carpeta local portátil sin servicio de red.
+
 ## 2.1.0 — 2026-10-30
 
 - Se conserva el motor de traducción bidireccional por TXT, sin idiomas precargados.
