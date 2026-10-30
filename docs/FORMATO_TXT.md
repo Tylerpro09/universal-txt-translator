@@ -1,4 +1,4 @@
-# Especificación del formato TXT — versión 2
+# Especificación del formato TXT — versión 3 (compatible con v2)
 
 [Inicio](../README.md) · [Guía de uso](GUIA_USUARIO.md) · [API](API_JAVASCRIPT.md)
 
@@ -40,7 +40,7 @@ Si no defines `IDIOMA`, el nombre se deduce del archivo. Si no defines `ORIGEN`,
 | Encabezados aceptados | Tipo |
 | --- | --- |
 | `[ALFABETO]`, `LETRAS`, `SIMBOLOS`, `ALFABETO COMPLETO`, `MAPA DE LETRAS` | Alfabeto |
-| `[DICCIONARIO]`, `VOCABULARIO`, `PALABRAS`, `TRADUCCIONES`, `FRASES` | Diccionario |
+| `[DICCIONARIO]`, `VOCABULARIO`, `PALABRAS`, `TRADUCCIONES`, `FRASES`, `[EXPRESIONES]` | Diccionario |
 | `[REGLAS]`, `[NOTAS]`, `[EJEMPLOS]`, `[GRAMATICA]`, `[INSTRUCCIONES]` | Texto informativo, ignorado |
 
 Las secciones pueden escribirse con corchetes, o como títulos solos. El modo sigue activo hasta el siguiente encabezado. Fuera de una sección, las entradas de una letra se consideran alfabeto y las demás diccionario.
@@ -88,12 +88,15 @@ buenos = buen
 
 - Las palabras del diccionario se comparan **sin distinguir mayúsculas/minúsculas**.
 - Se intenta preservar mayúsculas iniciales y textos completamente en mayúsculas cuando el destino contiene letras.
+- El texto y las equivalencias se normalizan a **Unicode NFC**; por ejemplo, `e` + acento combinante equivale a `é`.
 - Las tildes **no se eliminan automáticamente** en las equivalencias. `a` y `á` pueden necesitar entradas propias.
 - Al traducir alfabéticamente, varios símbolos Unicode consecutivos se reconocen siguiendo el mayor largo primero.
 - Los límites de palabras consideran letras y números Unicode. Símbolos y signos en los extremos pueden formar parte de entradas especiales, pero conviene probarlos antes de usarlos en producción.
 - El texto no reconocido queda en su forma original, para no inventar contenido.
 - Para evitar inversiones ambiguas, las claves duplicadas y los destinos repetidos de un mismo tipo se omiten y producen avisos.
 - La detección automática de sentido es heurística: ante duda, usa `encode` o `decode` manualmente.
+
+La dirección inversa siempre depende de la **unicidad de los destinos**; dos orígenes que producen exactamente el mismo destino en un mismo tipo de regla se consideran ambiguos.
 
 ## 7. Límites
 
