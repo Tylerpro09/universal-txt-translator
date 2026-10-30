@@ -1,7 +1,7 @@
 /* Motor TXT Universal: recursos publicos para uso sin conexion.
  * Nunca almacena archivos TXT privados ni mensajes escritos por el usuario. */
 'use strict';
-const CACHE_NAME = 'motor-txt-offline-v4';
+const CACHE_NAME = 'motor-txt-offline-v5';
 const CACHE_PREFIXES = ['motor-txt-offline-', 'motor-txt-web-'];
 const OFFLINE_FILES = [
   './', './index.html', './enhancements.js', './quality.js', './offline.js',
