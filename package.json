@@ -1,8 +1,8 @@
 {
   "name": "universal-txt-translator",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Traductor web de idiomas desde TXT con modo online, PWA instalable y uso sin Wi-Fi.",
+  "description": "Traductor avanzado TXT: Unicode, informes de cobertura, editor, CLI y PWA sin Wi-Fi.",
   "engines": {
     "node": ">=22"
   },
@@ -11,6 +11,6 @@
   },
   "scripts": {
     "test": "node test_motor.js",
-    "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check offline.js && node --check cli.js && node --check sw.js && npm test"
+    "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check quality.js && node --check offline.js && node --check cli.js && node --check sw.js && npm test"
   }
 }
