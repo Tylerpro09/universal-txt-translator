@@ -72,6 +72,19 @@ En un alfabeto, el lado izquierdo de una entrada debe ser **una letra**. Para va
 
 Puedes editar el idioma activo mediante **Editar perfil actual** y aplicar los cambios pulsando **Activar idioma**. El editor no modifica el archivo físico original: exporta un TXT nuevo si quieres conservar los cambios.
 
+## 5A. Medir cobertura y ampliar el idioma
+
+Después de cargar un perfil, escribe un mensaje en el traductor. En el panel **Calidad y mejora del idioma** se muestran:
+
+- **Cobertura de traducción:** una estimación del porcentaje de caracteres reconocidos por equivalencias.
+- **Coincidencias:** número de reglas que se aplicaron al texto.
+- **Palabras pendientes:** palabras que contienen caracteres sin traducir, o para las que no hay una regla completa.
+- **Diagnóstico TXT:** botón para descargar localmente entrada, resultado y estadísticas.
+
+Para ampliar el vocabulario, pulsa una palabra pendiente, escribe su equivalencia en **Traducción** y pulsa **Añadir equivalencia al idioma**. Se actualizarán el perfil, la traducción y el análisis.
+
+**No olvides exportar tu TXT o guardar el perfil**: los cambios del editor no se guardan automáticamente. La cobertura al 100% solo significa que se aplicaron reglas a todo el texto no blanco; no garantiza que la frase resultante sea gramaticalmente correcta.
+
 ## 6. Biblioteca local de idiomas
 
 La sección **Biblioteca de idiomas** permite:
