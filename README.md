@@ -1,6 +1,6 @@
 # Motor TXT Universal
 
-**Constructor de traductores bidireccionales basados en alfabetos, palabras y frases definidas en archivos TXT.** Sin idioma inventado precargado, sin API externa, sin registros y sin servidor de traducción.
+**Versión 3.0 · Constructor de traductores bidireccionales basados en alfabetos, palabras y frases definidas en archivos TXT.** Sin idioma inventado precargado, sin API externa, sin registros y sin servidor de traducción.
 
 **Abrir:** https://tylerpro09.github.io/universal-txt-translator/
 
@@ -16,6 +16,10 @@
 | Alfabetos de símbolos Unicode | Disponible | Sustitución de caracteres, incluidos símbolos de varios caracteres |
 | Diccionario de palabras y frases | Disponible | Coincidencias de palabra y frases completas; se priorizan las largas |
 | Diccionarios mixtos | Disponible | Primero frases/palabras, luego caracteres restantes |
+| Informe de cobertura | Disponible | Porcentaje aproximado de texto reconocido y lista de palabras pendientes |
+| Completar diccionario | Disponible | Añadir equivalencias desde la web con un formulario rápido |
+| Soporte Unicode NFC | Disponible | Reconoce formas compuestas de caracteres y secuencias de símbolos |
+| Motor optimizado | Disponible | Diccionarios indexados y evaluación sin expresión regular gigante |
 | Editor TXT integrado | Disponible | Pegar, validar, activar y corregir definiciones |
 | Biblioteca de perfiles | Disponible | Guardado **opcional** en el almacenamiento local del navegador |
 | Exportar el idioma | Disponible | Reconstruir un TXT del perfil cargado |
@@ -56,6 +60,7 @@ Los idiomas y traducciones del ejemplo son demostrativos: añade tus propias reg
 ## Documentación completa
 
 - [Uso sin Wi-Fi (Android y Windows)](docs/SIN_CONEXION.md): instalar, preparar recursos offline y utilizar la versión portátil.
+- [Novedades de la versión 3.0](docs/MEJORAS_3_0.md): métricas, mejoras del motor y ejemplos.
 - [Guía del usuario](docs/GUIA_USUARIO.md): cargar, editar, traducir, guardar perfiles y traducir archivos.
 - [Especificación del formato TXT](docs/FORMATO_TXT.md): gramática del archivo, límites, validación, conflictos y codificación.
 - [CLI para terminal](docs/CLI.md): traducir texto y archivos desde Node.js.
@@ -73,9 +78,11 @@ Los idiomas y traducciones del ejemplo son demostrativos: añade tus propias reg
 ├── index.html                  # Interfaz principal y núcleo embebido de respaldo
 ├── motor_idiomas.js            # Motor reutilizable (CommonJS + navegador)
 ├── enhancements.js             # Editor, biblioteca local y traducción de TXT
+├── quality.js                  # Cobertura y mejoras rápidas del idioma
 ├── plantilla_idioma.txt        # Formato vacío; sin idioma precargado
 ├── cli.js                      # Terminal: traducir textos y archivos
 ├── test_motor.js               # Pruebas automáticas Node.js
+├── test_advanced.js            # Unicode, rendimiento y análisis
 ├── package.json                # npm test
 node cli.js --help
 ├── manifest.webmanifest        # Metadatos de la aplicación web
@@ -110,6 +117,8 @@ Para probar la web, abre `index.html` con un navegador moderno. Al abrir exclusi
 ### Despliegue
 
 GitHub Pages publica la carpeta raíz `/` de la rama `main`. La web no necesita pasos de compilación. Los cambios pueden tardar en aparecer mientras GitHub Pages actualiza el sitio.
+
+La suite añade casos con Unicode, límites de palabras y entradas largas. La cobertura es una estimación de caracteres cubiertos por reglas, **no** una certificación de calidad de traducción ni una evaluación semántica.
 
 **Nota de CI:** GitHub Actions puede quedar bloqueado por restricciones de facturación de la cuenta. En ese caso, la falta de ejecución de la acción no significa que las pruebas hayan fallado; ejecútalas localmente con `npm test`.
 
