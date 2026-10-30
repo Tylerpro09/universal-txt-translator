@@ -23,6 +23,7 @@
 | Buscar equivalencias | Disponible | Filtra la tabla del idioma activo |
 | Web adaptable | Disponible | Escritorio y teléfono |
 | Uso sin conexión | Disponible | La aplicación base funciona abriendo el HTML; la web publicada guarda sus recursos después de una primera visita correcta |
+| CLI Node.js | Disponible | Traduce textos y archivos desde la terminal, sin dependencias |
 | API JavaScript | Disponible | `parseProfile`, `detectDirection`, `translate` |
 | Pruebas con Node.js | Disponible | `npm test` |
 | Mod de Minecraft | **No implementado** | Se documenta la integración prevista; falta escoger versión y cargador |
@@ -56,6 +57,7 @@ Los idiomas y traducciones del ejemplo son demostrativos: añade tus propias reg
 
 - [Guía del usuario](docs/GUIA_USUARIO.md): cargar, editar, traducir, guardar perfiles y traducir archivos.
 - [Especificación del formato TXT](docs/FORMATO_TXT.md): gramática del archivo, límites, validación, conflictos y codificación.
+- [CLI para terminal](docs/CLI.md): traducir texto y archivos desde Node.js.
 - [API JavaScript](docs/API_JAVASCRIPT.md): integración con navegador y Node.js, resultados y errores.
 - [Arquitectura y desarrollo](docs/ARQUITECTURA.md): flujo interno, estructura del código, privacidad y pruebas.
 - [Preguntas frecuentes y soluciones](docs/PREGUNTAS_FRECUENTES.md): errores comunes, compatibilidad y traducción automática.
@@ -71,8 +73,10 @@ Los idiomas y traducciones del ejemplo son demostrativos: añade tus propias reg
 ├── motor_idiomas.js            # Motor reutilizable (CommonJS + navegador)
 ├── enhancements.js             # Editor, biblioteca local y traducción de TXT
 ├── plantilla_idioma.txt        # Formato vacío; sin idioma precargado
+├── cli.js                      # Terminal: traducir textos y archivos
 ├── test_motor.js               # Pruebas automáticas Node.js
 ├── package.json                # npm test
+node cli.js --help
 ├── manifest.webmanifest        # Metadatos de la aplicación web
 ├── sw.js                       # Caché offline de recursos estáticos
 ├── icon.svg                    # Icono de la aplicación
