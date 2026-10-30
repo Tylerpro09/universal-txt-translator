@@ -109,7 +109,7 @@ El archivo tiene un límite de 2 MB. Si la dirección automática es incierta o 
 
 La aplicación base está embebida en `index.html` y funciona al abrir ese archivo localmente. Para conservar también las herramientas avanzadas, descarga el repositorio completo, no solo el HTML.
 
-En GitHub Pages, tras visitar correctamente la web, el service worker puede almacenar los archivos estáticos para futuras visitas sin conexión. El caché depende de la configuración del navegador: no equivale a almacenamiento permanente garantizado.
+En GitHub Pages, pulsa **Guardar para usar sin Wi-Fi** y espera la confirmación. El service worker precarga los archivos estáticos para futuras visitas sin conexión. También puede instalarse como aplicación web según el navegador. Lee el [manual offline](SIN_CONEXION.md). El caché depende de la configuración del navegador: no equivale a almacenamiento permanente garantizado.
 
 ## 10. Importante sobre privacidad
 
