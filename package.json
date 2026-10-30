@@ -1,8 +1,8 @@
 {
   "name": "universal-txt-translator",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
-  "description": "Motor local para crear traductores bidireccionales mediante perfiles TXT, sin dependencias.",
+  "description": "Traductor web de idiomas desde TXT con modo online, PWA instalable y uso sin Wi-Fi.",
   "engines": {
     "node": ">=22"
   },
