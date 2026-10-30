@@ -14,6 +14,7 @@ body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-
 .header {display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:40px}
 .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.1px;font-size:1.04rem}
 .logo{display:grid;place-items:center;width:40px;height:40px;background:linear-gradient(135deg,#54d1fc,#9f8eff);border-radius:12px;color:#071126;font-size:23px}
+.header-docs{color:#9edfff;font-size:.85rem;font-weight:700;text-decoration:none}.header-docs:hover{text-decoration:underline}
 .badge {border:1px solid #2f5871;border-radius:999px;background:#12364a;color:#a2e8ff;font-size:.83rem;padding:8px 12px}
 h1{font-size:clamp(2.1rem,5vw,3.7rem);line-height:1.07;letter-spacing:-.052em;margin:0 0 13px;font-weight:850}
 .lead {font-size:1rem;color:var(--muted);line-height:1.6;max-width:700px;margin:0 0 31px}
@@ -67,7 +68,7 @@ table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{padding:8px 12p
 </head>
 <body>
 <main class="wrapper">
- <header class="header"><div class="brand"><div class="logo">⇄</div><span>Motor TXT <span style="color:var(--muted)">/</span> Universal</span></div><span class="badge">● 100 % local · sin Internet</span></header>
+ <header class="header"><div class="brand"><div class="logo">⇄</div><span>Motor TXT <span style="color:var(--muted)">/</span> Universal</span></div><a class="header-docs" href="./docs/index.html">Documentación</a><span class="badge">● 100 % local · sin Internet</span></header>
  <h1>Tu archivo <span class="accent">.txt</span><br>se convierte en traductor.</h1>
  <p class="lead">No trae idiomas integrados. Carga cualquier archivo TXT con equivalencias de letras, palabras o frases, y el motor crea un traductor bidireccional sin conexión.</p>
  <div class="grid">
