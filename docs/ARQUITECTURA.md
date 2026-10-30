@@ -50,6 +50,14 @@ Motor TXT Universal implementa una traducción **determinista** a partir de regl
 
 **`test_motor.js`** y **`package.json`**: suite de regresión sin bibliotecas externas.
 
+## Motor de la versión 3.0
+
+El texto y las equivalencias se comparan en Unicode NFC. Para las reglas del diccionario se crea un índice por carácter inicial y los candidatos se ordenan por longitud, evitando construir una gran expresión regular con miles de alternativas.
+
+Un `WeakMap` conserva índices por perfil mientras este permanece cargado. El análisis devuelve `matches`, `matchedCharacters`, `totalCharacters`, `coverage` y `untranslatedWords`. La búsqueda de zonas pendientes avanza siguiendo las posiciones de las sustituciones, sin comparar cada palabra contra todas las equivalencias encontradas.
+
+**Precisión:** el porcentaje de cobertura no equivale a comprensión semántica ni a traducción natural. La inversión puede ser ambigua si el archivo de origen no define suficientes reglas.
+
 ## Orden de sustitución
 
 1. Se buscan frases y palabras mediante coincidencias de palabra completa (priorizando expresiones largas).
