@@ -1,6 +1,6 @@
 /* Caché privado del sitio; los archivos TXT del usuario nunca se envían ni se cachean aquí. */
-const CACHE = 'motor-txt-web-v2';
-const CORE = ['./', './index.html', './enhancements.js', './motor_idiomas.js', './manifest.webmanifest', './icon.svg'];
+const CACHE = 'motor-txt-web-v2-1';
+const CORE = ['./', './index.html', './enhancements.js', './motor_idiomas.js', './manifest.webmanifest', './icon.svg', './docs/index.html'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
@@ -25,11 +25,11 @@ self.addEventListener('fetch', event => {
     }).catch(() => caches.match('./index.html')));
     return;
   }
-  event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => {
+  event.respondWith(fetch(request).then(response => {
     if (response.ok && url.pathname.startsWith(new URL('./', self.location.href).pathname)) {
       const copy = response.clone();
       caches.open(CACHE).then(cache => cache.put(request, copy)).catch(() => {});
     }
     return response;
-  })));
+  }).catch(() => caches.match(request).then(cached => cached || Response.error())));
 });
