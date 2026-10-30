@@ -11,6 +11,6 @@
   },
   "scripts": {
     "test": "node test_motor.js",
-    "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check cli.js && node --check sw.js && npm test"
+    "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check offline.js && node --check cli.js && node --check sw.js && npm test"
   }
 }
