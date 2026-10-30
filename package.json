@@ -1,9 +1,16 @@
 {
   "name": "universal-txt-translator",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
-  "description": "Motor local de traducción mediante equivalencias en archivos TXT",
+  "description": "Motor local para crear traductores bidireccionales mediante perfiles TXT, sin dependencias.",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "motor-txt": "./cli.js"
+  },
   "scripts": {
-    "test": "node test_motor.js"
+    "test": "node test_motor.js",
+    "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check cli.js && node --check sw.js && npm test"
   }
 }
