@@ -1,0 +1,19 @@
+{
+  "name": "Motor TXT Universal — Traductor de idiomas personalizados",
+  "short_name": "Motor TXT",
+  "description": "Crea un traductor bidireccional desde un archivo TXT, sin enviar tus datos a servidores.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d1a",
+  "theme_color": "#0b1123",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
