@@ -1,0 +1,9 @@
+{
+  "name": "universal-txt-translator",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Motor local de traducción mediante equivalencias en archivos TXT",
+  "scripts": {
+    "test": "node test_motor.js"
+  }
+}
