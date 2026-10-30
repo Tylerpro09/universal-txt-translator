@@ -62,6 +62,8 @@ table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{padding:8px 12p
 @media(max-width:850px){.grid{grid-template-columns:1fr}.header{margin-bottom:26px}.panel{padding:19px}}
 @media(max-width:490px){.wrapper{padding:15px 12px 30px}.header{margin-bottom:24px}h1{font-size:2.3rem}.actions{gap:8px}.actions button{flex:1 0 43%}textarea{min-height:142px}.badge{font-size:.7rem}.panel{padding:17px}}
 </style>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
 </head>
 <body>
 <main class="wrapper">
@@ -501,5 +503,6 @@ $('save').addEventListener('click', () => {
   saveFile('traduccion_' + activeProfile.name.replace(/[^a-z0-9_-]+/giu, '_') + '.txt', $('output').value);
 });
 </script>
+<script src="./enhancements.js" defer></script>
 </body>
 </html>
