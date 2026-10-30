@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1123">
+<title>Motor TXT Universal — Crea traductores desde archivos TXT</title>
+<meta name="description" content="Crea traductores bidireccionales a partir de alfabetos y diccionarios TXT. Sin idiomas precargados y sin subir archivos. Funciona sin instalar nada.">
+<style>
+:root { color-scheme:dark; --bg:#080d1a;--panel:#111a2d;--panel2:#16233a;--line:#2a3b59;--txt:#e8effc;--muted:#9baccc;--brand:#56d7ff;--purple:#a99aff;--ok:#68e7b3;--warn:#ffca87; }
+* {box-sizing:border-box} html { scroll-behavior:smooth; }
+body { margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:radial-gradient(ellipse at 30% -12%,#143461 0%,transparent 45%),var(--bg);color:var(--txt);min-height:100vh; }
+.wrapper { max-width:1200px;margin:auto;padding:22px 20px 56px; }
+.header {display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:40px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.1px;font-size:1.04rem}
+.logo{display:grid;place-items:center;width:40px;height:40px;background:linear-gradient(135deg,#54d1fc,#9f8eff);border-radius:12px;color:#071126;font-size:23px}
+.badge {border:1px solid #2f5871;border-radius:999px;background:#12364a;color:#a2e8ff;font-size:.83rem;padding:8px 12px}
+h1{font-size:clamp(2.1rem,5vw,3.7rem);line-height:1.07;letter-spacing:-.052em;margin:0 0 13px;font-weight:850}
+.lead {font-size:1rem;color:var(--muted);line-height:1.6;max-width:700px;margin:0 0 31px}
+.accent{background:linear-gradient(90deg,#62dffc,#b2a2ff);background-clip:text;color:transparent}
+.grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:linear-gradient(160deg,rgba(22,35,58,.98),rgba(15,24,43,.98));border:1px solid var(--line);border-radius:19px;box-shadow:0 10px 32px #0000001c;padding:24px;min-width:0}
+.topline {display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:17px}
+h2{font-size:1.14rem;margin:0;letter-spacing:-.012em}
+.step {font-size:.75rem;color:var(--purple);font-weight:750;letter-spacing:.05em}
+.drop {display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:25px 12px;background:repeating-linear-gradient(135deg,#112138,#112138 12px,#132640 12px,#132640 24px);border:1.5px dashed #537da8;border-radius:14px;cursor:pointer;transition:.18s}
+.drop:hover,.drop.drag {border-color:var(--brand);background:#183752;transform:translateY(-1px)}
+.drop strong{font-size:.97rem}
+.drop small,.hint{font-size:.81rem;color:var(--muted);line-height:1.5}
+.upload-icon{display:grid;place-items:center;font-size:27px;color:var(--brand);width:44px;height:44px;background:#0a263f;border-radius:12px}
+button,select {font:inherit}
+button{cursor:pointer;border-radius:10px;border:1px solid var(--line);padding:11px 13px;font-weight:680;color:var(--txt);background:#1a2c47;transition:.15s}
+button:hover{background:#254565;border-color:#5a7da5}button:focus-visible,textarea:focus-visible,select:focus-visible,.drop:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+button:disabled{opacity:.42;cursor:not-allowed}
+.primary {background:linear-gradient(90deg,#38bdea,#8e8afa);border:0;color:#06152b;font-weight:800}
+.primary:hover{background:linear-gradient(90deg,#6cdeff,#b1aaff)}
+.full{width:100%}.spacer{margin-top:12px}.small{font-size:.85rem}
+.profile{background:#0b172a;border:1px solid #2f4969;border-radius:12px;padding:15px;margin-top:17px}
+.profile-head{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:#b5c6e5}
+.dot {width:7px;height:7px;background:var(--muted);border-radius:50%}.dot.ready{background:var(--ok);box-shadow:0 0 10px #50cc9855}
+.profile strong{font-size:1.1rem;display:block;margin-top:9px;overflow-wrap:anywhere}
+.stat{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.stat span{background:#18314d;border-radius:7px;padding:5px 8px;font-size:.76rem;color:#b1d7ff}
+.subtle{color:var(--muted);font-size:.82rem;margin:9px 0 0;overflow-wrap:anywhere;line-height:1.4}
+.note{border:1px solid #3c4c6a;border-radius:11px;padding:12px;margin-top:17px;font-size:.8rem;color:#bdcbe3;line-height:1.6}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+select {flex:1;min-width:180px;background:#0c192f;color:var(--txt);border:1px solid #415677;padding:11px 12px;border-radius:9px}
+.label{display:flex;justify-content:space-between;gap:10px;margin:0 0 9px;font-size:.88rem;font-weight:750}
+.label em{font-size:.75rem;font-style:normal;color:var(--muted);font-weight:500}
+textarea{display:block;width:100%;min-height:174px;resize:vertical;background:#0b1527;border:1px solid #3b4d6c;border-radius:12px;color:var(--txt);padding:15px;font:1rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace}
+textarea::placeholder{color:#7488ac}textarea[readonly]{background:#0c1d32;color:#aee9ff}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin:13px 0 20px}.actions button{flex:1 0 auto}
+.detect{margin:15px 0 4px;background:#11263a;border:1px solid #304e67;border-radius:10px;padding:11px 12px;color:#c7d5ef;line-height:1.5;font-size:.85rem}
+.detect.good{border-color:#277c67;background:#10312c}.detect.warn{border-color:#87673e;background:#392b20;color:#ffddb0}
+.help{margin-top:24px}
+details{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:#0c192c}
+summary{cursor:pointer;font-weight:700;font-size:.9rem}
+.table-wrap{overflow:auto;max-height:340px;margin-top:13px}
+table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{padding:8px 12px;border-bottom:1px solid #293852;text-align:left}td:last-child{color:#b1eafd}th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+.footer{padding:28px 0;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.65}
+[hidden]{display:none!important}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.header{margin-bottom:26px}.panel{padding:19px}}
+@media(max-width:490px){.wrapper{padding:15px 12px 30px}.header{margin-bottom:24px}h1{font-size:2.3rem}.actions{gap:8px}.actions button{flex:1 0 43%}textarea{min-height:142px}.badge{font-size:.7rem}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<main class="wrapper">
+ <header class="header"><div class="brand"><div class="logo">⇄</div><span>Motor TXT <span style="color:var(--muted)">/</span> Universal</span></div><span class="badge">● 100 % local · sin Internet</span></header>
+ <h1>Tu archivo <span class="accent">.txt</span><br>se convierte en traductor.</h1>
+ <p class="lead">No trae idiomas integrados. Carga cualquier archivo TXT con equivalencias de letras, palabras o frases, y el motor crea un traductor bidireccional sin conexión.</p>
+ <div class="grid">
+  <section class="panel" aria-label="Configuración del idioma">
+   <div class="topline"><h2>1. Cargar idioma</h2><span class="step">ARCHIVO TXT</span></div>
+   <input id="file" type="file" accept=".txt,text/plain" hidden>
+   <div class="drop" id="drop" role="button" tabindex="0" aria-label="Elegir archivo TXT">
+    <span class="upload-icon">⇧</span><strong>Arrastra tu archivo .txt</strong><small>o haz clic aquí para seleccionarlo</small><small>Hasta 2 MB · UTF-8 / Windows-1252</small>
+   </div>
+   <div class="profile" aria-live="polite">
+    <div class="profile-head"><span class="status"><i class="dot" id="dot"></i><span id="state">Esperando archivo</span></span><span class="step" id="detectedKind">—</span></div>
+    <strong id="lang">No hay idioma cargado</strong>
+    <p class="subtle" id="filename">Sin diccionarios ni alfabetos precargados.</p>
+    <div class="stat" id="stats" hidden><span id="alphaCount">0 letras</span><span id="wordCount">0 palabras</span></div>
+   </div>
+   <p class="hint" id="parseWarning" role="alert"></p>
+   <div class="note"><b>Formato admitido</b><br><code>A = &lt;símbolo&gt;</code> para alfabetos o <code>hola = &lt;equivalente&gt;</code> para diccionarios. Los encabezados <code>[ALFABETO]</code> y <code>[DICCIONARIO]</code> permiten combinarlos.</div>
+   <button id="template" class="full spacer small">Descargar plantilla de idioma .txt</button>
+  </section>
+  <section class="panel" aria-label="Traductor">
+   <div class="topline"><h2>2. Traducir texto</h2><span class="step">BIDIRECCIONAL</span></div>
+   <div class="form-row"><label for="direction" class="small">Dirección</label><select id="direction" aria-label="Dirección de traducción"><option value="auto">Detectar automáticamente</option><option value="encode">Origen → Destino</option><option value="decode">Destino → Origen</option></select><button id="swap" title="Invertir traducción">⇄ Invertir</button></div>
+   <label class="label" for="input">Texto original <em id="charCount">0 caracteres</em></label>
+   <textarea id="input" spellcheck="false" placeholder="Escribe o pega un texto aquí..."></textarea>
+   <div class="detect" id="detection" role="status">Carga tu TXT para activar la traducción.</div>
+   <div class="actions"><button class="primary" id="translate" disabled>Traducir</button><button id="example" disabled>Usar entrada del TXT</button><button id="clear">Limpiar</button></div>
+   <label class="label" for="output">Traducción <em id="matchCount">0 coincidencias</em></label>
+   <textarea id="output" readonly spellcheck="false" placeholder="Aquí aparecerá la traducción..."></textarea>
+   <div class="actions"><button id="copy" disabled>Copiar resultado</button><button id="save" disabled>Guardar traducción .txt</button></div>
+   <div class="help"><details><summary>Ver equivalencias del idioma cargado</summary><div class="table-wrap"><table><thead><tr><th>Tipo</th><th id="tableFrom">Origen</th><th id="tableTo">Destino</th></tr></thead><tbody id="mappingRows"><tr><td colspan="3">No se ha cargado un idioma.</td></tr></tbody></table></div></details></div>
+  </section>
+ </div>
+ <footer class="footer"><a href="https://github.com/Tylerpro09/universal-txt-translator" target="_blank" rel="noopener noreferrer" style="color:#9edfff">Código fuente en GitHub</a><br>Los archivos permanecen en tu dispositivo. Un TXT con equivalencias permite construir un traductor; un texto sin pares de traducción no permite inferir un idioma desconocido automáticamente.</footer>
+</main>
+<script>
+/* Motor universal TXT de alfabetos y diccionarios — funciona sin red ni dependencias.
+   Exposición: window.MotorIdiomasTXT / require('./motor_idiomas.js') */
+(function (root, factory) {
+  const engine = factory();
+  if (typeof module === 'object' && module.exports) module.exports = engine;
+  root.MotorIdiomasTXT = engine;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const MAX_ENTRIES = 5000;
+  const MAX_TEXT = 2_000_000;
+  const trimQuotes = v => v.trim().replace(/^["'“”‘’]+|["'“”‘’]+$/gu, '').trim();
+  const foldHeader = v => v.normalize('NFD').replace(/\p{M}/gu, '').toUpperCase().trim();
+  // El motor no presupone la ortografía de ningún idioma: las tildes son distintas.
+  const foldLetter = v => v.toLocaleLowerCase();
+  const escRe = v => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const startsWithAt = (str, token, pos, ignoreCase) => ignoreCase
+    ? str.slice(pos, pos + token.length).toLocaleLowerCase() === token.toLocaleLowerCase()
+    : str.startsWith(token, pos);
+
+  function parseProfile(raw, filename = 'idioma.txt') {
+    if (typeof raw !== 'string' || !raw.trim()) throw new Error('El TXT está vacío.');
+    if (raw.length > MAX_TEXT) throw new Error('El archivo es demasiado grande (máximo 2 millones de caracteres).');
+    const text = raw.replace(/^\uFEFF/u, '').replace(/\r\n?/gu, '\n');
+    const lines = text.split('\n');
+    const defaultName = filename.replace(/\.txt$/iu, '').replace(/[_-]+/gu, ' ').trim() || 'Idioma personalizado';
+    let name = defaultName;
+    let sourceLanguage = 'Idioma de origen';
+    let mode = 'auto';
+    const alphabet = [];
+    const words = [];
+    const warnings = [];
+    const alphabetKeys = new Set();
+    const wordKeys = new Set();
+    const alphabetValues = new Map();
+    const wordValues = new Map();
+    let parsed = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const original = lines[i];
+      const line = original.trim();
+      if (!line || /^(?:#|\/\/|;)/u.test(line)) continue;
+
+      const explicit = line.match(/^(?:IDIOMA|DESTINO|IDIOMA_DESTINO)\s*[:=]\s*(.{1,100})$/iu);
+      if (explicit) { name = explicit[1].trim(); continue; }
+      const origin = line.match(/^(?:ORIGEN|IDIOMA_ORIGEN|LENGUA_BASE)\s*[:=]\s*(.{1,100})$/iu);
+      if (origin) { sourceLanguage = origin[1].trim(); continue; }
+      if (i < 4) {
+        const title = line.match(/^(.{2,65}?)\s+[—–-]\s+(?:ALFABETO|DICCIONARIO|VOCABULARIO|IDIOMA)\b/iu);
+        if (title) { name = title[1].trim(); continue; }
+      }
+      const header = foldHeader(line.replace(/^\[(.*)\]$/u, '$1').replace(/:$/u, ''));
+      if (/^(?:ALFABETO|ALFABETO COMPLETO|LETRAS|SIMBOLOS|MAPA DE LETRAS)$/u.test(header)) {
+        mode = 'alphabet'; continue;
+      }
+      if (/^(?:DICCIONARIO|VOCABULARIO|PALABRAS|TRADUCCIONES|FRASES)$/u.test(header)) {
+        mode = 'words'; continue;
+      }
+      if (/^(?:REGLAS|EJEMPLOS|COMO DESCIFRAR|COMO USAR|INSTRUCCIONES|NOTAS|DESCRIPCION|GRAMATICA)$/u.test(header)) {
+        mode = 'ignore'; continue;
+      }
+      if (/^(?:[-=_\s]){3,}$/u.test(line)) continue;
+      if (mode === 'ignore') continue;
+
+      // Formatos admitidos: a = valor, a | valor, palabra -> traducción.
+      const match = line.match(/^(.+?)\s*(?:=>|->|=|→|↔|\|)\s*(.+)$/u);
+      if (!match) continue;
+      const left = trimQuotes(match[1]);
+      const right = trimQuotes(match[2]);
+      if (!left || !right || left.length > 160 || right.length > 160) continue;
+      if (/^(?:LETRA|SIMBOLO|ESPANOL|IDIOMA|PALABRA)$/iu.test(left) &&
+          /^(?:SIMBOLO|LETRA|TRADUCCION|IDIOMA|ESPANOL)$/iu.test(right)) continue;
+
+      const isLetter = [...left].length === 1 && /\p{L}/u.test(left);
+      const type = mode === 'words' ? 'words' : mode === 'alphabet' ? 'alphabet' : (isLetter ? 'alphabet' : 'words');
+      if (type === 'alphabet' && !isLetter) {
+        warnings.push(`Línea ${i + 1}: una entrada de alfabeto debe tener una sola letra a la izquierda.`);
+        continue;
+      }
+      const normalizedKey = type === 'alphabet' ? foldLetter(left) : left.toLocaleLowerCase();
+      const ownKeys = type === 'alphabet' ? alphabetKeys : wordKeys;
+      const ownValues = type === 'alphabet' ? alphabetValues : wordValues;
+      if (ownKeys.has(normalizedKey)) { warnings.push(`Línea ${i + 1}: entrada duplicada «${left}», omitida.`); continue; }
+      if (ownValues.has(right.toLocaleLowerCase())) {
+        warnings.push(`Línea ${i + 1}: «${right}» ya corresponde a «${ownValues.get(right.toLocaleLowerCase())}». La traducción inversa sería ambigua; se omitió.`);
+        continue;
+      }
+      ownKeys.add(normalizedKey);
+      ownValues.set(right.toLocaleLowerCase(), left);
+      (type === 'alphabet' ? alphabet : words).push({ from: left, to: right });
+      parsed++;
+      if (parsed > MAX_ENTRIES) throw new Error('Demasiadas entradas. Máximo: 5000.');
+    }
+    if (!alphabet.length && !words.length) {
+      throw new Error('No hay equivalencias reconocibles. Añade una sección [ALFABETO] con A = símbolo o [DICCIONARIO] con hola = palabra.');
+    }
+    return { name, sourceLanguage, filename, alphabet, words, warnings, entries: parsed };
+  }
+
+  function buildWordRegex(pairs, direction) {
+    const items = pairs.map(p => direction === 'encode' ? p.from : p.to);
+    if (!items.length) return null;
+    const sorted = [...new Set(items)].sort((a, b) => b.length - a.length);
+    try {
+      return new RegExp(`(?<![\\p{L}\\p{N}])(?:${sorted.map(escRe).join('|')})(?![\\p{L}\\p{N}])`, 'giu');
+    } catch (_) {
+      // Compatibilidad con motores JS que carecen de lookbehind Unicode.
+      return new RegExp(`(^|[^\\p{L}\\p{N}])(${sorted.map(escRe).join('|')})(?=$|[^\\p{L}\\p{N}])`, 'giu');
+    }
+  }
+
+  function lookupWordMap(pairs, direction) {
+    const map = new Map();
+    for (const p of pairs) {
+      const src = direction === 'encode' ? p.from : p.to;
+      const dst = direction === 'encode' ? p.to : p.from;
+      map.set(src.toLocaleLowerCase(), dst);
+    }
+    return map;
+  }
+
+  function matchCount(text, pairs, direction) {
+    const regex = buildWordRegex(pairs, direction);
+    if (!regex) return 0;
+    const matches = text.match(regex);
+    return matches ? matches.length : 0;
+  }
+
+  function characterCoverage(text, entries, direction) {
+    if (!entries.length) return 0;
+    const keys = entries.map(p => direction === 'encode' ? p.from : p.to).sort((a, b) => b.length - a.length);
+    let total = 0;
+    for (let i = 0; i < text.length;) {
+      let matched = false;
+      for (const key of keys) {
+        if (direction === 'encode' && key.length === 1) {
+          const char = String.fromCodePoint(text.codePointAt(i));
+          if (foldLetter(char) === foldLetter(key)) {
+            total += 1; i += char.length; matched = true; break;
+          }
+        } else if (startsWithAt(text, key, i, direction === 'encode')) {
+          total += [...key].length; i += key.length; matched = true; break;
+        }
+      }
+      if (!matched) i += String.fromCodePoint(text.codePointAt(i)).length;
+    }
+    return total;
+  }
+
+  function detectDirection(text, profile) {
+    if (!text.trim()) return { direction: 'unknown', confidence: 'ninguna', reason: 'Introduce un texto.' };
+    const eWords = matchCount(text, profile.words, 'encode');
+    const dWords = matchCount(text, profile.words, 'decode');
+    const eAlpha = characterCoverage(text, profile.alphabet, 'encode');
+    const dAlpha = characterCoverage(text, profile.alphabet, 'decode');
+    let encodeScore = eWords * 10 + eAlpha;
+    let decodeScore = dWords * 10 + dAlpha;
+    // Los caracteres propios de un alfabeto no latino son evidencia fuerte.
+    const targetSpecial = profile.alphabet.filter(p => /[^\p{L}\p{N}\s]/u.test(p.to));
+    if (targetSpecial.some(p => text.includes(p.to))) decodeScore += 7;
+    if (!encodeScore && !decodeScore) {
+      return { direction: 'unknown', confidence: 'ninguna', reason: 'El texto no coincide con el alfabeto ni el diccionario cargados.' };
+    }
+    if (encodeScore > 0 && decodeScore > 0) {
+      const difference = Math.abs(encodeScore - decodeScore);
+      if (difference <= 2 || Math.max(encodeScore, decodeScore) / Math.min(encodeScore, decodeScore) < 1.3) {
+        return { direction: 'ambiguous', confidence: 'baja', reason: 'El texto contiene elementos de ambas escrituras. Selecciona la dirección manualmente.' };
+      }
+    }
+    const direction = encodeScore > decodeScore ? 'encode' : 'decode';
+    return {
+      direction,
+      confidence: Math.max(encodeScore, decodeScore) >= 5 ? 'alta' : 'media',
+      reason: direction === 'encode' ? `Se reconoce texto de ${profile.sourceLanguage}.` : `Se reconoce texto de ${profile.name}.`
+    };
+  }
+
+  function substituteAlphabet(text, alphabet, direction) {
+    if (!alphabet.length || !text) return { value: text, matches: 0 };
+    const pairs = alphabet.map(p => direction === 'encode' ?
+      { key: p.from, value: p.to } : { key: p.to, value: p.from.toLocaleLowerCase() });
+    pairs.sort((a, b) => b.key.length - a.key.length);
+    let out = '', matches = 0;
+    for (let i = 0; i < text.length;) {
+      let found = false;
+      for (const p of pairs) {
+        const char = String.fromCodePoint(text.codePointAt(i));
+        if (direction === 'encode' && [...p.key].length === 1 && foldLetter(char) === foldLetter(p.key)) {
+          out += p.value; i += char.length; matches++; found = true; break;
+        }
+        if (startsWithAt(text, p.key, i, direction === 'encode')) {
+          out += p.value; i += p.key.length; matches++; found = true; break;
+        }
+      }
+      if (!found) {
+        const char = String.fromCodePoint(text.codePointAt(i));
+        out += char; i += char.length;
+      }
+    }
+    return { value: out, matches };
+  }
+
+  function preserveWordCase(source, result) {
+    if (!/[\p{L}]/u.test(result)) return result;
+    if (source.length > 1 && source === source.toLocaleUpperCase() &&
+        source !== source.toLocaleLowerCase()) return result.toLocaleUpperCase();
+    if (source[0] === source[0].toLocaleUpperCase() &&
+        source[0] !== source[0].toLocaleLowerCase()) {
+      return result[0].toLocaleUpperCase() + result.slice(1);
+    }
+    return result;
+  }
+
+  function translate(text, profile, requestedDirection = 'auto') {
+    if (!profile || !Array.isArray(profile.alphabet) || !Array.isArray(profile.words)) {
+      throw new Error('Primero carga un perfil TXT válido.');
+    }
+    if (typeof text !== 'string') throw new Error('El texto debe ser una cadena.');
+    const detection = detectDirection(text, profile);
+    let direction = requestedDirection;
+    if (direction === 'auto') {
+      if (detection.direction === 'unknown' || detection.direction === 'ambiguous') {
+        return { output: '', direction: null, detection, matches: 0,
+          warning: detection.reason + ' Usa la dirección manual.' };
+      }
+      direction = detection.direction;
+    }
+    if (direction !== 'encode' && direction !== 'decode') throw new Error('Dirección desconocida.');
+    let result = '';
+    let pos = 0;
+    let matches = 0;
+    const words = lookupWordMap(profile.words, direction);
+    const regex = buildWordRegex(profile.words, direction);
+    if (regex) {
+      let m;
+      while ((m = regex.exec(text)) !== null) {
+        // En modo fallback, el primer grupo puede contener un separador.
+        const token = m[2] && m.index !== undefined && m[0] !== m[2] ? m[2] : m[0];
+        const tokenStart = m.index + m[0].indexOf(token);
+        if (tokenStart < pos) continue;
+        const prior = substituteAlphabet(text.slice(pos, tokenStart), profile.alphabet, direction);
+        result += prior.value; matches += prior.matches;
+        const replacement = words.get(token.toLocaleLowerCase());
+        result += replacement == null ? token : preserveWordCase(token, replacement);
+        if (replacement != null) matches++;
+        pos = tokenStart + token.length;
+      }
+    }
+    const tail = substituteAlphabet(text.slice(pos), profile.alphabet, direction);
+    result += tail.value; matches += tail.matches;
+    return { output: result, direction, detection, matches, warning: matches ? '' : 'No se encontraron equivalencias para este texto.' };
+  }
+
+  return { parseProfile, detectDirection, translate };
+});
+
+</script>
+<script>
+const TEMPLATE = `# Crea un idioma añadiendo equivalencias sin signos < >.
+# El nombre del idioma no es obligatorio.
+ORIGEN: Español
+IDIOMA: Nombre del idioma de destino
+
+[ALFABETO]
+# A = símbolo_correspondiente
+# B = otro_símbolo
+
+[DICCIONARIO]
+# hola = traducción_de_hola
+# buenos días = traducción_de_buenos_días
+
+# Elimina el # de las líneas que quieras activar.
+# No hay palabras ni símbolos preconfigurados.
+`;
+const $ = id => document.getElementById(id);
+let activeProfile = null;
+let lastDirection = 'encode';
+const engine = window.MotorIdiomasTXT;
+const fileInput = $('file');
+const drop = $('drop');
+function showStatus(message, kind = '') {
+  $('detection').textContent = message;
+  $('detection').className = 'detect' + (kind ? ' ' + kind : '');
+}
+function saveFile(filename, content) {
+  const blob = new Blob(['\ufeff' + content], { type: 'text/plain;charset=utf-8' });
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = href; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(href), 2000);
+}
+function renderMappings(profile) {
+  const rows = $('mappingRows'); rows.replaceChildren();
+  const frag = document.createDocumentFragment();
+  for (const [type, pairs] of [['Letra', profile.alphabet], ['Palabra', profile.words]]) {
+    for (const p of pairs) {
+      const tr = document.createElement('tr');
+      for (const value of [type, p.from, p.to]) {
+        const td = document.createElement('td'); td.textContent = value; tr.appendChild(td);
+      }
+      frag.appendChild(tr);
+    }
+  }
+  rows.appendChild(frag);
+}
+function installProfile(text, filename) {
+  try {
+    const p = engine.parseProfile(text, filename);
+    activeProfile = p;
+    $('lang').textContent = p.name;
+    $('filename').textContent = `${p.sourceLanguage} ↔ ${p.name} · ${p.filename}`;
+    $('state').textContent = 'Traductor preparado';
+    $('dot').className = 'dot ready';
+    $('stats').hidden = false;
+    $('alphaCount').textContent = `${p.alphabet.length} letras`;
+    $('wordCount').textContent = `${p.words.length} palabras / expresiones`;
+    $('detectedKind').textContent = p.alphabet.length && p.words.length ? 'MIXTO' : p.alphabet.length ? 'ALFABETO' : 'DICCIONARIO';
+    $('parseWarning').textContent = p.warnings.length ? `Avisos: ${p.warnings.slice(0, 3).join(' · ')}${p.warnings.length > 3 ? '…' : ''}` : '';
+    $('direction').options[1].textContent = `${p.sourceLanguage} → ${p.name}`;
+    $('direction').options[2].textContent = `${p.name} → ${p.sourceLanguage}`;
+    $('tableFrom').textContent = p.sourceLanguage;
+    $('tableTo').textContent = p.name;
+    for (const id of ['translate', 'example']) $(id).disabled = false;
+    renderMappings(p);
+    doTranslate();
+  } catch (err) {
+    $('parseWarning').textContent = err.message;
+    if (!activeProfile) showStatus(err.message, 'warn');
+  }
+}
+async function loadFile(file) {
+  if (!file) return;
+  if (file.size > 2_000_000) { $('parseWarning').textContent = 'Archivo demasiado grande (máximo: 2 MB).'; return; }
+  if (!/\.txt$/iu.test(file.name)) { $('parseWarning').textContent = 'Selecciona un archivo con extensión .txt.'; return; }
+  try {
+    const bytes = await file.arrayBuffer();
+    let content = new TextDecoder('utf-8').decode(bytes);
+    if ((content.match(/\ufffd/gu) || []).length > 0) content = new TextDecoder('windows-1252').decode(bytes);
+    installProfile(content, file.name);
+  } catch (err) { $('parseWarning').textContent = 'Error al leer el archivo: ' + err.message; }
+}
+function doTranslate() {
+  const text = $('input').value;
+  $('charCount').textContent = `${[...text].length} caracteres`;
+  if (!activeProfile) { $('output').value = ''; return; }
+  if (!text) { $('output').value = ''; $('matchCount').textContent = '0 coincidencias'; showStatus('Escribe algo para traducir.'); return; }
+  try {
+    const result = engine.translate(text, activeProfile, $('direction').value);
+    $('output').value = result.output;
+    $('matchCount').textContent = `${result.matches} coincidencias`;
+    $('copy').disabled = $('save').disabled = !result.output;
+    if (result.warning) showStatus(result.warning, 'warn');
+    else {
+      lastDirection = result.direction;
+      const directionText = result.direction === 'encode' ? `${activeProfile.sourceLanguage} → ${activeProfile.name}` : `${activeProfile.name} → ${activeProfile.sourceLanguage}`;
+      const extra = $('direction').value === 'auto' ? ` · Detección: ${result.detection.confidence}` : ' · Dirección manual';
+      showStatus(`Identificación: ${directionText}${extra}`, 'good');
+    }
+  } catch (e) { showStatus('No se pudo traducir: ' + e.message, 'warn'); }
+}
+drop.addEventListener('click', () => fileInput.click());
+drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+for (const evt of ['dragenter','dragover']) drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add('drag'); });
+for (const evt of ['dragleave','drop']) drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove('drag'); });
+drop.addEventListener('drop', e => loadFile([...e.dataTransfer.files].find(f => /\.txt$/iu.test(f.name))));
+fileInput.addEventListener('change', e => { loadFile(e.target.files[0]); fileInput.value = ''; });
+$('template').addEventListener('click', () => saveFile('plantilla_idioma.txt', TEMPLATE));
+$('translate').addEventListener('click', doTranslate);
+$('direction').addEventListener('change', doTranslate);
+let debounce;
+$('input').addEventListener('input', () => { clearTimeout(debounce); debounce = setTimeout(doTranslate, 80); });
+$('example').addEventListener('click', () => {
+  if (!activeProfile) return;
+  $('input').value = activeProfile.words.length ? activeProfile.words.slice(0, 4).map(w => w.from).join(' · ') : activeProfile.alphabet.slice(0, 12).map(p => p.from).join('');
+  $('direction').value = 'encode'; doTranslate();
+});
+$('swap').addEventListener('click', () => {
+  if (!activeProfile) return;
+  if ($('output').value) $('input').value = $('output').value;
+  const old = $('direction').value;
+  $('direction').value = old === 'auto' ? (lastDirection === 'encode' ? 'decode' : 'encode') : old === 'encode' ? 'decode' : 'encode';
+  doTranslate();
+});
+$('clear').addEventListener('click', () => { $('input').value = ''; doTranslate(); $('input').focus(); });
+$('copy').addEventListener('click', async () => {
+  if (!$('output').value) return;
+  try {
+    await navigator.clipboard.writeText($('output').value);
+    const btn = $('copy'); const previous = btn.textContent; btn.textContent = 'Copiado ✓'; setTimeout(() => btn.textContent = previous, 1100);
+  } catch (_) {
+    $('output').select();
+    try { document.execCommand('copy'); $('copy').textContent = 'Copiado ✓'; setTimeout(() => $('copy').textContent = 'Copiar resultado', 1100); }
+    catch (_) { showStatus('Selecciona el texto de salida y cópialo manualmente.', 'warn'); }
+  }
+});
+$('save').addEventListener('click', () => {
+  if (!activeProfile || !$('output').value) return;
+  saveFile('traduccion_' + activeProfile.name.replace(/[^a-z0-9_-]+/giu, '_') + '.txt', $('output').value);
+});
+</script>
+</body>
+</html>
