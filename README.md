@@ -55,6 +55,7 @@ Los idiomas y traducciones del ejemplo son demostrativos: añade tus propias reg
 
 ## Documentación completa
 
+- [Uso sin Wi-Fi (Android y Windows)](docs/SIN_CONEXION.md): instalar, preparar recursos offline y utilizar la versión portátil.
 - [Guía del usuario](docs/GUIA_USUARIO.md): cargar, editar, traducir, guardar perfiles y traducir archivos.
 - [Especificación del formato TXT](docs/FORMATO_TXT.md): gramática del archivo, límites, validación, conflictos y codificación.
 - [CLI para terminal](docs/CLI.md): traducir texto y archivos desde Node.js.
@@ -85,6 +86,14 @@ node cli.js --help
 ├── CHANGELOG.md
 └── docs/                       # Manuales técnicos y para usuarios
 ```
+
+## Preparar uso sin Wi-Fi
+
+Con Internet, abre [el traductor](https://tylerpro09.github.io/universal-txt-translator/) y pulsa **Guardar para usar sin Wi-Fi**. Espera al mensaje **Preparación completada**. Tus recursos web quedarán almacenados en este navegador y podrás volver a abrir el traductor sin Wi-Fi ni datos móviles, mientras el navegador conserve su caché. Debes guardar tus archivos TXT o perfiles de idioma por separado.
+
+Como alternativa, [descarga el repositorio en ZIP](https://github.com/Tylerpro09/universal-txt-translator/archive/refs/heads/main.zip), descomprímelo y abre `index.html` directamente desde el disco.
+
+Consulta la [guía offline](docs/SIN_CONEXION.md) para instrucciones en Android y Windows.
 
 ## Desarrollo y pruebas
 
