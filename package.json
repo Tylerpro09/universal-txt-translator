@@ -10,7 +10,7 @@
     "motor-txt": "./cli.js"
   },
   "scripts": {
-    "test": "node test_motor.js",
+    "test": "node test_motor.js && node test_advanced.js",
     "check": "node --check motor_idiomas.js && node --check enhancements.js && node --check quality.js && node --check offline.js && node --check cli.js && node --check sw.js && npm test"
   }
 }
